@@ -214,7 +214,7 @@
   <span class="icon-label">vinyl</span>
 </button>
   <button class="icon" onclick="document.getElementById('browser-window').style.display='block'">
-  <span class="icon-glyph">🌐</span>
+  <img class="icon-glyph" src="browser.jpg" alt="browser"/>
   <span class="icon-label">browser</span>
 </button>
 </div>
@@ -333,28 +333,57 @@
     document.getElementById('browser-frame').src = url;
   }
   
-  let draggedWindow = null;
-  let offsetX = 0;
-  let offsetY = 0;
 
-  document.querySelectorAll('.window-bar').forEach(function(bar){
-    bar.addEventListener('mousedown', function(e){
-      draggedWindow = bar.parentElement;
-      offsetX = e.clientX - draggedWindow.offsetLeft;
-      offsetY = e.clientY - draggedWindow.offsetTop;
-    });
-  });
+  let calcDragging = false;
+  let calcOffsetX = 0;
+  let calcOffsetY = 0;
 
-  document.addEventListener('mousemove', function(e){
-    if(draggedWindow){
-      draggedWindow.style.left = (e.clientX - offsetX) + 'px';
-      draggedWindow.style.top = (e.clientY - offsetY) + 'px';
+  document.getElementById('calc-window').querySelector('.window-bar').onmousedown = function(e){
+    calcDragging = true;
+    calcOffsetX = e.clientX - document.getElementById('calc-window').offsetLeft;
+    calcOffsetY = e.clientY - document.getElementById('calc-window').offsetTop;
+  };
+
+  let vinylDragging = false;
+  let vinylOffsetX = 0;
+  let vinylOffsetY = 0;
+
+  document.getElementById('vinyl-window').querySelector('.window-bar').onmousedown = function(e){
+    vinylDragging = true;
+    vinylOffsetX = e.clientX - document.getElementById('vinyl-window').offsetLeft;
+    vinylOffsetY = e.clientY - document.getElementById('vinyl-window').offsetTop;
+  };
+
+  let browserDragging = false;
+  let browserOffsetX = 0;
+  let browserOffsetY = 0;
+
+  document.getElementById('browser-window').querySelector('.window-bar').onmousedown = function(e){
+    browserDragging = true;
+    browserOffsetX = e.clientX - document.getElementById('browser-window').offsetLeft;
+    browserOffsetY = e.clientY - document.getElementById('browser-window').offsetTop;
+  };
+
+  document.onmousemove = function(e){
+    if(calcDragging){
+      document.getElementById('calc-window').style.left = (e.clientX - calcOffsetX) + 'px';
+      document.getElementById('calc-window').style.top = (e.clientY - calcOffsetY) + 'px';
     }
-  });
+    if(vinylDragging){
+      document.getElementById('vinyl-window').style.left = (e.clientX - vinylOffsetX) + 'px';
+      document.getElementById('vinyl-window').style.top = (e.clientY - vinylOffsetY) + 'px';
+    }
+    if(browserDragging){
+      document.getElementById('browser-window').style.left = (e.clientX - browserOffsetX) + 'px';
+      document.getElementById('browser-window').style.top = (e.clientY - browserOffsetY) + 'px';
+    }
+  };
 
-  document.addEventListener('mouseup', function(){
-    draggedWindow = null;
-  });
+  document.onmouseup = function(){
+    calcDragging = false;
+    vinylDragging = false;
+    browserDragging = false;
+  };
 </script>
 </body>
   </html>
