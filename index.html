@@ -123,6 +123,71 @@
       padding:10px 0;
       cursor:pointer;
     }
+        .record{
+      width:120px;
+      height:120px;
+      margin:16px auto;
+      border-radius:50%;
+      background: repeating-radial-gradient(circle, #0c0b0e 0px, #0c0b0e 2px, #222 3px, #222 4px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      animation: spin 3s linear infinite;
+      animation-play-state: paused;
+      object-fit:contain;
+    }
+    .record.spinning{
+      animation-play-state: running;
+    }
+    @keyframes spin{
+      to{ transform: rotate(360deg); }
+    }
+    .vinyl-controls{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      padding:16px;
+    }
+    .vinyl-btn{
+      background:#d4af37;
+      color:#1a1508;
+      border:none;
+      border-radius:20px;
+      padding:8px 20px;
+      font-family:sans-serif;
+      font-size:13px;
+      cursor:pointer;
+    }
+    .browser-bar{
+      display:flex;
+      gap:6px;
+      padding:8px;
+    }
+    #browser-url{
+      flex:1;
+      background:#050507;
+      border:1px solid rgba(255,255,255,0.2);
+      border-radius:14px;
+      color:#ece9e3;
+      padding:6px 10px;
+      font-size:12px;
+    }
+    #go-btn{
+      background:#d4af37;
+      color:#1a1508;
+      border:none;
+      border-radius:14px;
+      padding:6px 14px;
+      font-size:12px;
+      cursor:pointer;
+    }
+    #browser-frame{
+      width:100%;
+      height:220px;
+      border:none;
+      background:#fff;
+    }
   </style>
 </head>
 <body>
@@ -142,6 +207,14 @@
 <button class="icon" onclick="document.getElementById('calc-window').style.display='block'">
   <img class="icon-glyph" src="calculator.jpg" alt="calculator" />
   <span class="icon-label">calculator</span>
+</button>
+<button class="icon" onclick="document.getElementById('vinyl-window').style.display='block'">
+  <img class="icon-glyph" src="vinyl.jpg" alt="vinyl player"/>
+  <span class="icon-label">vinyl</span>
+</button>
+  <button class="icon" onclick="document.getElementById('browser-window').style.display='block'">
+  <span class="icon-glyph">🌐</span>
+  <span class="icon-label">browser</span>
 </button>
 </div>
 <div class="window" id="calc-window">
@@ -171,6 +244,29 @@
     <button class="calc-btn" onclick="calcEquals()">=</button>
     <button class="calc-btn" onclick="calcInput('+')">+</button>
   </div>
+</div>
+<div class="window" id="vinyl-window">
+  <div class="window-bar">
+    <span>vinyl player</span>
+    <button onclick="document.getElementById('vinyl-window').style.display='none'">✕</button>
+  </div>
+  <div class="vinyl-controls">
+    <img class="record" id="record" src="vinyl.jpg" alt="vinyl record" />
+    <button class="vinyl-btn" id="play-btn" onclick="togglePlay()">Play</button>
+    <input type="file" id="song-file" accept="audio/*" onchange="loadSong()" />
+    <audio id="song-audio"></audio>
+  </div>
+</div>
+<div class="window" id="browser-window" style="width:320px;">
+  <div class="window-bar">
+    <span>browser</span>
+    <button onclick="document.getElementById('browser-window').style.display='none'">✕</button>
+  </div>
+  <div class="browser-bar">
+    <input id="browser-url" type="text" placeholder="type a website..." />
+    <button id="go-btn" onclick="goToSite()">Go</button>
+  </div>
+  <iframe id="browser-frame" src="https://example.com"></iframe>
 </div>
 <script>
   function updateClock(){
@@ -202,6 +298,36 @@
     } catch(e){
       display.textContent = 'Error';
     }
+  }
+  function loadSong(){
+    const file = document.getElementById('song-file').files[0];
+    if(!file) return;
+    const audio = document.getElementById('song-audio');
+    audio.src = URL.createObjectURL(file);
+  }
+
+  function togglePlay(){
+    const audio = document.getElementById('song-audio');
+    const record = document.getElementById('record');
+    const btn = document.getElementById('play-btn');
+    if(audio.paused){
+      audio.play();
+      record.classList.add('spinning');
+      btn.textContent = 'Pause';
+    } else {
+      audio.pause();
+      record.classList.remove('spinning');
+      btn.textContent = 'Play';
+    }
+  }
+  
+  function goToSite(){
+    let url = document.getElementById('browser-url').value.trim();
+    if(!url) return;
+    if(!url.startsWith('http')){
+      url = 'https://' + url;
+    }
+    document.getElementById('browser-frame').src = url;
   }
 </script>
 </body>
