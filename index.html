@@ -1,217 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retro OS Desktop</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, #0c1033 0%, #1c1d45 35%, #502d59 55%, #18091c 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-        }
-
-        body::before {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            width: 120%;
-            height: 75%;
-            background: radial-gradient(ellipse at 50% 10%, #f59e0b 0%, rgba(239, 68, 68, 0.4) 30%, transparent 65%);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            opacity: 0.85;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        body::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 50%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%), linear-gradient(45deg, #131424 0%, #2e1d38 100%);
-            clip-path: polygon(30% 20%, 50% 0%, 75% 40%, 100% 100%, 0% 100%);
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .workspace-split {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            gap: 40px;
-            width: 90%;
-            max-width: 960px;
-            z-index: 10;
-        }
-
-        .deck-column {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .vinyl-deck {
-            background: rgba(254, 243, 199, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 2px solid rgba(245, 158, 11, 0.3);
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 200px;
-            height: 200px;
-        }
-
-        .vinyl {
-            width: 180px;
-            height: 180px;
-            background: 
-                radial-gradient(circle, #dc2626 0%, #dc2626 18%, #111827 19%, transparent 22%),
-                radial-gradient(circle, #030712 30%, #1f2937 40%, #030712 50%, #1f2937 60%, #030712 70%),
-                radial-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px),
-                radial-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 12px 12px, 8px 8px;
-            background-position: 0 0, 0 0, 4px 4px, 2px 2px;
-            border-radius: 50%;
-            box-shadow: inset 0 0 15px rgba(255,255,255,0.05), 0 12px 30px rgba(0,0,0,0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            animation: spinRecord 3s linear infinite;
-            clip-path: circle(50% at 50% 50%);
-        }
-
-        .vinyl::before {
-            content: "";
-            width: 10px;
-            height: 10px;
-            background: #ffffff;
-            border-radius: 50%;
-            z-index: 5;
-        }
-
-        .vinyl-star {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='180' height='180'><path d='M30,30 L35,45 L50,45 L38,55 L42,70 L30,60 L18,70 L22,55 L10,45 L25,45 Z M140,40 L143,50 L153,50 L145,56 L148,66 L140,60 L132,66 L135,56 L127,50 L137,50 Z M50,120 L53,130 L63,130 L55,136 L58,146 L50,140 L42,146 L45,136 L37,130 L47,130 Z M130,120 L133,130 L143,130 L135,136 L138,146 L130,140 L122,146 L125,136 L117,130 L127,130 Z' fill='none' stroke='white' stroke-width='2' stroke-dasharray='1 3'/></svg>");
-            pointer-events: none;
-        }
-
-        .dot-matrix-display {
-            background: rgba(15, 17, 34, 0.75);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            border-radius: 8px;
-            padding: 8px 16px;
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
-            font-size: 0.85rem;
-            color: #ef4444;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            text-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
-            background-image: linear-gradient(rgba(15,17,34,0) 50%, rgba(0,0,0,0.3) 50%);
-            background-size: 100% 4px;
-        }
-
-        .system-dialog {
-            background: rgba(15, 17, 34, 0.7);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 2px solid rgba(245, 158, 11, 0.2);
-            border-radius: 12px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
-            max-width: 480px;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .dialog-header {
-            background: linear-gradient(to right, rgba(245, 158, 11, 0.2) 0%, transparent 100%);
-            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
-            padding: 10px 16px;
-            color: #facc15;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .dialog-body {
-            padding: 35px;
-            font-family: "Times New Roman", Times, serif;
-            color: #f8fafc;
-            line-height: 1.6;
-        }
-
-        .dialog-body h1 {
-            font-size: 2.5rem;
-            font-weight: normal;
-            margin: 0 0 16px 0;
-            color: #ffffff;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-            padding-bottom: 8px;
-        }
-
-        .dialog-body p {
-            font-size: 1.2rem;
-            margin: 0;
-            text-indent: 30px;
-            text-align: justify;
-            color: #cbd5e1;
-        }
-
-        @keyframes spinRecord {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 768px) {
-            .workspace-split {
-                flex-direction: column;
-                gap: 30px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>MJ OS</title>
+  <style>
+    html,body{
+      margin:0;
+      height:100%;
+      overflow: hidden;
+    }
+    #wallpaper{
+      width:100%;
+      height:100%;
+      background: linear-gradient(180deg, #1a1820 0%, #050406 100%);
+      position:relative;
+    }
+    .sparkle{
+      position:absolute;
+      width:3px;
+      height:3px;
+      border-radius:50%;
+      background:#e9d38a;
+      box-shadow: 0 0 6px 1px rgba(233, 211, 138,0.8);
+      animation: twinkle 2.5s ease-in-out infinite;
+    }
+    @keyframes twinkle{
+      0%,100%{opacity:0.2;transform: scale(1);}
+      50%{opacity:1; transform:scale(1.8);}
+    }
+    #topbar{
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:34px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      padding: 0 16px;
+      background: rgba(255,255,255,0.07);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ece9e3;
+      font-family : sans-serif;
+      font-size: 13px;
+      box-sizing: border-box;
+    }
+    #icons{
+      position:absolute;
+      top:50px;
+      left: 16px;
+    }
+    .icon{
+      width:70px;
+      background: none;
+      border:none;
+      color:#ece9e3;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+      font-family:sans-serif;
+    }
+    .icon-glyph{
+      font-size: 24px;
+      width: 44px;
+      height:44px;
+      display:flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      object-fit: contain;
+      padding: 6px;
+    }
+    .icon-label{
+      font-size:11px;
+    }
+    .window{
+      position:absolute;
+      top:120px;
+      left:120px;
+      width:220px;
+      background:rgba(255,255,255,0.08);
+      border-radius: 10px;
+      color:#ece9e3;
+      font-family:sans-serif;
+      display:none;
+    }
+    .window-bar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:8px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    .window-body{
+      padding:16px;
+      font-size:13px;
+    }
+    .calc-display{
+      background:#050507;
+      margin:0 16px;
+      padding:10px;
+      border-radius:6px;
+      text-align:right;
+      font-size:20px;
+      font-family:monospace;
+    }
+    .calc-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:6px;
+      padding:16px;
+    }
+    .calc-btn{
+      background:rgba(255,255,255,0.1);
+      border:1px solid rgba(255,255,255,0.2);
+      border-radius:6px;
+      color:#ece9e3;
+      font-size:14px;
+      padding:10px 0;
+      cursor:pointer;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="workspace-split">
+  <div id="wallpaper">
+    <div class="sparkle" style="top: 15%; left: 20%; animation-delay: 0s;"></div>
+    <div class="sparkle" style="top: 30%; left: 70%; animation-delay: 0.5s;"></div>
+    <div class="sparkle" style="top: 55%; left: 40%; animation-delay: 1s;"></div>
+    <div class="sparkle" style="top: 70%; left: 80%; animation-delay: 1.5s;"></div>
+    <div class="sparkle" style="top: 80%; left: 15%; animation-delay: 2s;"></div>
+  </div>
+<div id="topbar">
+  <span>MJ OS</span>
+  <span id="clock">--:--</span>
+</div>
+<div id="icons">
+<button class="icon" onclick="document.getElementById('calc-window').style.display='block'">
+  <img class="icon-glyph" src="calculator.jpg" alt="calculator" />
+  <span class="icon-label">calculator</span>
+</button>
+</div>
+<div class="window" id="calc-window">
+  <div class="window-bar">
+    <span>calculator</span>
+    <button onclick="document.getElementById('calc-window').style.display='none'">✕</button>
+  </div>
+    <div class="calc-display" id="calc-display">0</div>
+  <div class="calc-grid">
+    <button class="calc-btn" onclick="calcInput('7')">7</button>
+    <button class="calc-btn" onclick="calcInput('8')">8</button>
+    <button class="calc-btn" onclick="calcInput('9')">9</button>
+    <button class="calc-btn" onclick="calcInput('/')">÷</button>
 
-        <div class="deck-column">
-            <div class="vinyl-deck">
-                <div class="vinyl">
-                    <div class="vinyl-star"></div>
-                </div>
-            </div>
-            <div class="dot-matrix-display">welcome to micheal_0s</div>
-        </div>
+    <button class="calc-btn" onclick="calcInput('4')">4</button>
+    <button class="calc-btn" onclick="calcInput('5')">5</button>
+    <button class="calc-btn" onclick="calcInput('6')">6</button>
+    <button class="calc-btn" onclick="calcInput('*')">×</button>
 
-        <div class="system-dialog">
-            <div class="dialog-header">Media Player - mjj_bio.txt</div>
-            <article class="dialog-body">
-                <h1>Michael Jackson</h1>
-                <p>Known globally as the "King of Pop," Michael Jackson transformed the landscape of modern music, music videos, and dance styles. His landmark 1982 record album, Thriller, remains the best-selling album of all time worldwide, breaking cultural barriers and introducing iconic performance elements such as the moonwalk signature sequence.</p>
-            </article>
-        </div>
+    <button class="calc-btn" onclick="calcInput('1')">1</button>
+    <button class="calc-btn" onclick="calcInput('2')">2</button>
+    <button class="calc-btn" onclick="calcInput('3')">3</button>
+    <button class="calc-btn" onclick="calcInput('-')">−</button>
 
-    </div>
+    <button class="calc-btn" onclick="calcClear()">C</button>
+    <button class="calc-btn" onclick="calcInput('0')">0</button>
+    <button class="calc-btn" onclick="calcEquals()">=</button>
+    <button class="calc-btn" onclick="calcInput('+')">+</button>
+  </div>
+</div>
+<script>
+  function updateClock(){
+    const now = new Date();
+    const h = now.getHours().toString().padStart(2,"0")
+    const m = now.getMinutes().toString().padStart(2,"0")
+    document.getElementById("clock").textContent = h + ":" + m;
+  }
+  updateClock();
+  setInterval(updateClock,1000);
+  
+  function calcInput(value){
+    const display = document.getElementById('calc-display');
+    if(display.textContent === '0'){
+      display.textContent = value;
+    } else {
+      display.textContent = display.textContent + value;
+    }
+  }
 
+  function calcClear(){
+    document.getElementById('calc-display').textContent = '0';
+  }
+
+  function calcEquals(){
+    const display = document.getElementById('calc-display');
+    try{
+      display.textContent = eval(display.textContent);
+    } catch(e){
+      display.textContent = 'Error';
+    }
+  }
+</script>
 </body>
-</html>
+  </html>
