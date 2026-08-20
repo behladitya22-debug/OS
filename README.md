@@ -1,12 +1,12 @@
-Welcome to my project,i really appreciate the time taken to go throught my prject and apolgize for any inconvince that may happend while reviewing my work.
-I have made a working website/os based on micheal jackson. 
-:features
-1. If we notice closely we see a spinning vinyl under it that reads welcom to the os
-2. A small introductory on micheal jackson
-3. the background is a mix a gradiant colours and it blends well with the asthetics
-:For future expansion
-1. I would hope to learn more about coding and visualize a timeline and make a documention on micheal jackson from where he began.
-2. Also i wish to learn how to add songs so i can make the vinyl more useful.
-:Note 
-since this is my very first time with all this i used AI for simple doubt clearing and transforming my idea into code as is, for my expansion idea i could have asked the AI but it didnt feel right. also i need help for the ports selection and just trivial things related to github.
-
+Welcome to my project, its a web based os, that i made by myself.
+Features:
+1. We have a working music player that spins! you can play any songs you seire just browse right through it
+2. also even if you close the music app it runs in background
+3. We have a working web os.
+4. also we have calculator(tm),cat-calculator.
+5. We have custom background a live one its like all sparkly
+NOTE:
+Its a slight inspo from micheal jacson hebce the MJ OS, in my future i will add something related to him
+Also i appreciate you going through my work it took me a total of 5-6hrs over the span of 3 days so i hope you like it.
+ Also its quite hard to see the differnce I hope you can see it but the colour blend is dark purple to black.
+ Thats all for today and i hope you enjoy my project,Thank you.=)
