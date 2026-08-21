@@ -164,23 +164,14 @@
       display:flex;
       gap:6px;
       padding:8px;
+      flex-wrap:wrap;
     }
-    #browser-url{
-      flex:1;
-      background:#050507;
-      border:1px solid rgba(255,255,255,0.2);
-      border-radius:14px;
-      color:#ece9e3;
-      padding:6px 10px;
-      font-size:12px;
-    }
-    #go-btn{
+    .browser-btn{
       background:#d4af37;
       color:#1a1508;
       border:none;
       border-radius:14px;
-      padding:6px 14px;
-      font-size:12px;
+      padding:6px 12px;
       cursor:pointer;
     }
     #browser-frame{
@@ -264,10 +255,11 @@
     <button onclick="document.getElementById('browser-window').style.display='none'">✕</button>
   </div>
   <div class="browser-bar">
-    <input id="browser-url" type="text" placeholder="type a website..." />
-    <button id="go-btn" onclick="goToSite()">Go</button>
-  </div>
-  <iframe id="browser-frame" src="https://example.com"></iframe>
+    <button class="browser-btn" onclick="goToSite('https://en.wikipedia.org')">Wikipedia</button>
+    <button class="browser-btn" onclick="goToSite('https://example.com')">Example</button>
+    <button class="browser-btn" onclick="goToSite('https://www.w3schools.com')">W3Schools</button>
+</div>
+<iframe id="browser-frame" src="https://en.wikipedia.org"></iframe>
 </div>
 <script>
   function updateClock(){
@@ -321,19 +313,9 @@
       btn.textContent = 'Play';
     }
   }
-    function goToSite(){
-    let input = document.getElementById('browser-url').value.trim();
-    if(!input) return;
-    let url;
-    if(input.includes('.') && !input.includes(' ')){
-      url = input.startsWith('http') ? input : 'https://' + input;
-    } else {
-      url = 'https://www.google.com/search?q=' + encodeURIComponent(input) + '&igu=1';
-    }
+      function goToSite(url){
     document.getElementById('browser-frame').src = url;
   }
-  
-
   let calcDragging = false;
   let calcOffsetX = 0;
   let calcOffsetY = 0;
